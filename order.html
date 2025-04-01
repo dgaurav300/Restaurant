@@ -76,6 +76,8 @@
         </table>
         <button onclick="addItem()">Add More Items</button>
         <button onclick="generateQR()">Generate QR Code</button>
+        <button onclick="window.location.href='index.html'">Back to Menu</button>
+        <div id="whatsappLink" style="margin-top: 20px;"></div>
         <div id="qrcode"></div>
     </div>
 
@@ -159,8 +161,14 @@
             var phone = "9876543210";  // Replace with restaurant's WhatsApp number
             var message = `Order: \n` + orderDetails.join("\n");
             var whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            // Generate QR code
             document.getElementById("qrcode").innerHTML = "";
             new QRCode(document.getElementById("qrcode"), whatsappUrl);
+
+            // Add linkable button
+            var whatsappLinkDiv = document.getElementById("whatsappLink");
+            whatsappLinkDiv.innerHTML = `<button onclick="window.open('${whatsappUrl}', '_blank')" style="background-color: #25D366; color: white; font-weight: bold;">Send via WhatsApp</button>`;
         }
     </script>
 </body>
