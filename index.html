@@ -25,12 +25,12 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
             border-radius: 10px;
-            overflow-x: hidden;
+           
             margin-top: 10px;
             display: flex;
             flex-direction: column;
             height: 100vh;
-            overflow: hidden;
+           
         }
         .menu-header {
             text-align: center;
@@ -230,8 +230,9 @@
         }
         .menu-categories {
             flex-grow: 1;
-            overflow-y: auto;
+            overflow-x: scroll;
             margin-top: 20px;
+            max-height: calc(100vh - 250px); /* Adjust height to fit within the viewport */
         }
     </style>
 </head>
