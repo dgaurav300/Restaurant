@@ -234,7 +234,7 @@
         }
         .menu-categories {
             flex-grow: 1;
-            overflow-x: scroll;
+            overflow: scroll;
             margin-top: 20px;
             max-height: calc(100vh - 250px); /* Adjust height to fit within the viewport */
         }
@@ -261,31 +261,8 @@
 
         <!-- Scrollable Menu Categories -->
         <div class="menu-categories">
-            <div class="menu-category" id="breakfastCategory">
-                <h2>Breakfast</h2>
-                <div id="breakfastItems"></div>
-            </div>
-
-            <div class="menu-category" id="starterCategory">
-                <h2>Starter</h2>
-                <div id="starterItems"></div>
-            </div>
-
-            <div class="menu-category" id="rotiRiceCategory">
-                <h2>Roti and Rice</h2>
-                <div id="rotiRiceItems"></div>
-            </div>
-
-            <div class="menu-category" id="mainCourseCategory">
-                <h2>Main Course</h2>
-                <div id="mainCourseItems"></div>
-            </div>
-
-            <div class="menu-category" id="nonVegCategory">
-                <h2>Non-Veg</h2>
-                <div id="nonVegItems"></div>
-            </div>
         </div>
+        
     </div>
 
     <script>
@@ -301,75 +278,76 @@
             { name: "Butter Chicken", price: "₹220", category: "Main Course", type: "Non-Veg", image: "https://via.placeholder.com/50?text=Butter+Chicken" },
         ];
 
-        // Function to render items
-        function renderItems() {
-            const categories = {
-                Breakfast: document.getElementById("breakfastItems"),
-                Starter: document.getElementById("starterItems"),
-                "Roti and Rice": document.getElementById("rotiRiceItems"),
-                "Main Course": document.getElementById("mainCourseItems"),
-                "Non-Veg": document.getElementById("nonVegItems"),
-            };
+        // Function to dynamically generate categories and render items
+        function renderCategoriesAndItems() {
+            const menuCategoriesContainer = document.querySelector(".menu-categories");
+            const typeFilter = document.getElementById("typeFilter");
 
-            // Clear all categories
-            for (let category in categories) {
-                categories[category].innerHTML = '';
-            }
+            // Get unique categories and types
+            const categories = [...new Set(menuItems.map(item => item.category))];
+            const types = [...new Set(menuItems.map(item => item.type))];
 
-            menuItems.forEach(item => {
-                const itemHTML = `
-                    <div class="menu-item">
-                        <img src="${item.image}" alt="${item.name}" class="item-image">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">${item.price}</div>
+            // Populate type filter dropdown
+            typeFilter.innerHTML = `<option value="All">All</option>`;
+            types.forEach(type => {
+                typeFilter.innerHTML += `<option value="${type}">${type}</option>`;
+            });
+
+            // Render categories dynamically
+            menuCategoriesContainer.innerHTML = '';
+            categories.forEach(category => {
+                const categoryHTML = `
+                    <div class="menu-category" id="${category.replace(/\s+/g, '')}Category">
+                        <h2>${category}</h2>
+                        <div class="category-items"></div>
                     </div>
                 `;
-                if (categories[item.category]) {
-                    categories[item.category].innerHTML += itemHTML;
-                }
+                menuCategoriesContainer.innerHTML += categoryHTML;
             });
+
+            // Render items
+            renderItems();
         }
 
-        // Function to filter items based on search input and type
-        function filterItems() {
+        // Function to render items
+        function renderItems() {
+            const typeFilterValue = document.getElementById("typeFilter").value;
             const searchQuery = document.getElementById("searchInput").value.toLowerCase();
-            const typeFilter = document.getElementById("typeFilter").value;
 
+            // Filter items based on search and type
             const filteredItems = menuItems.filter(item => {
                 const matchesSearch = item.name.toLowerCase().includes(searchQuery);
-                const matchesType = typeFilter === "All" || item.type === typeFilter;
+                const matchesType = typeFilterValue === "All" || item.type === typeFilterValue;
                 return matchesSearch && matchesType;
             });
 
-            const categories = {
-                Breakfast: document.getElementById("breakfastItems"),
-                Starter: document.getElementById("starterItems"),
-                "Roti and Rice": document.getElementById("rotiRiceItems"),
-                "Main Course": document.getElementById("mainCourseItems"),
-                "Non-Veg": document.getElementById("nonVegItems"),
-            };
+            // Clear and populate items in each category
+            const categories = [...new Set(menuItems.map(item => item.category))];
+            categories.forEach(category => {
+                const categoryContainer = document.getElementById(`${category.replace(/\s+/g, '')}Category`).querySelector(".category-items");
+                categoryContainer.innerHTML = '';
 
-            // Clear all categories
-            for (let category in categories) {
-                categories[category].innerHTML = '';
-            }
-
-            filteredItems.forEach(item => {
-                const itemHTML = `
-                    <div class="menu-item">
-                        <img src="${item.image}" alt="${item.name}" class="item-image">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">${item.price}</div>
-                    </div>
-                `;
-                if (categories[item.category]) {
-                    categories[item.category].innerHTML += itemHTML;
-                }
+                filteredItems
+                    .filter(item => item.category === category)
+                    .forEach(item => {
+                        const itemHTML = `
+                            <div class="menu-item">
+                                <img src="${item.image}" alt="${item.name}" class="item-image">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">${item.price}</div>
+                            </div>
+                        `;
+                        categoryContainer.innerHTML += itemHTML;
+                    });
             });
         }
 
-        // Initial rendering of items
-        renderItems();
+        // Event listeners for filtering
+        document.getElementById("searchInput").addEventListener("input", renderItems);
+        document.getElementById("typeFilter").addEventListener("change", renderItems);
+
+        // Initial rendering of categories and items
+        renderCategoriesAndItems();
     </script>
 </body>
 </html>
