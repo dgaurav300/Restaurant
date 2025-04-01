@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column; /* Allow stacking of elements */
+        }
+        .menu-container {
+            width: 90%;
+            max-width: 800px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: hidden;
+            margin-top: 10px;
+        }
+        .menu-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .menu-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin: 0; /* Remove any margin to ensure it doesn't collapse */
+        }
+        .search-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 100%; /* Take full width of the container */
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            box-sizing: border-box; /* Include padding and border in width calculation */
+        }
+        .menu-category {
+            margin-bottom: 20px;
+        }
+        .menu-category h2 {
+            font-size: 2rem;
+            color: #ff5722;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #ffebcd;
+            transform: scale(1.05);
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        .item-name {
+            font-size: 1.2rem;
+            color: #555;
+            flex: 1;
+        }
+        .item-price {
+            font-size: 1.1rem;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .item-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .price-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #ff8a65;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Ensure some padding for mobile screens */
+            }
+            .menu-header h1 {
+                font-size: 1.8rem;
+            }
+            .menu-category h2 {
+                font-size: 1.5rem;
+            }
+            .search-bar input {
+                width: 100%; /* Ensure it takes full width on smaller screens */
+            }
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 10px;
+            }
+            .item-name {
+                font-size: 1rem;
+            }
+            .item-price {
+                font-size: 1rem;
+                margin-top: 5px;
+            }
+            .btn {
+                width: 100%;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Additional responsive adjustments */
+        @media (max-width: 768px) {
+            .menu-container {
+                padding: 15px;
+            }
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .item-image {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 10px;
+            }
+            .item-name, .item-price {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-header h1 {
+                font-size: 1.5rem;
+            }
+            .menu-category h2 {
+                font-size: 1.2rem;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+            .search-bar input {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .menu-container {
+                width: 100%;
+                padding: 10px;
+            }
+            .menu-item {
+                padding: 10px;
+            }
+            .item-name, .item-price {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <!-- Order Now Button at the Top -->
+        
+        <button class="btn" onclick="window.location.href='order.html'">Order Now</button>
+
+        <div class="menu-header">
+            <h1>Restaurant Menu</h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search for an item...">
+        </div>
+
+        <!-- Menu Category: Main Course -->
+        <div class="menu-category" id="mainCourseCategory">
+            <h2>Main Course</h2>
+            <div id="mainCourseItems"></div>
+        </div>
+
+        <!-- Menu Category: Non-Veg -->
+        <div class="menu-category" id="nonVegCategory">
+            <h2>Non-Veg</h2>
+            <div id="nonVegItems"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Array of Menu Items (with images, names, and prices)
+        const menuItems = [
+            { name: "Veg Biryani", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Veg+Biryani" },
+            { name: "Steam Rice", price: "₹70", category: "Main Course", image: "https://via.placeholder.com/50?text=Steam+Rice" },
+            { name: "Jeera Rice", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Jeera+Rice" },
+            { name: "Veg Pulao", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Veg+Pulao" },
+            { name: "Dal Tadka", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Dal+Tadka" },
+            { name: "Shahi Paneer", price: "₹150", category: "Main Course", image: "https://via.placeholder.com/50?text=Shahi+Paneer" },
+            { name: "Butter Paneer Masala", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Butter+Paneer+Masala" },
+            { name: "Kadhai Paneer", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Kadhai+Paneer" },
+            { name: "Butter Chicken", price: "₹220", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Butter+Chicken" },
+            { name: "Kadhai Chicken", price: "₹240", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Kadhai+Chicken" },
+            { name: "Handi Chicken", price: "₹240", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Handi+Chicken" },
+            { name: "Chicken Biryani", price: "₹260", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Chicken+Biryani" },
+        ];
+
+        // Function to render items
+        function renderItems() {
+            let mainCourseItems = document.getElementById("mainCourseItems");
+            let nonVegItems = document.getElementById("nonVegItems");
+
+            mainCourseItems.innerHTML = '';
+            nonVegItems.innerHTML = '';
+
+            menuItems.forEach(item => {
+                const itemHTML = `
+                    <div class="menu-item">
+                        <img src="${item.image}" alt="${item.name}" class="item-image">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">${item.price}</div>
+                    </div>
+                `;
+                if (item.category === "Main Course") {
+                    mainCourseItems.innerHTML += itemHTML;
+                } else if (item.category === "Non-Veg") {
+                    nonVegItems.innerHTML += itemHTML;
+                }
+            });
+        }
+
+        // Function to filter items based on search input
+        function filterItems() {
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+            const filteredItems = menuItems.filter(item => 
+                item.name.toLowerCase().includes(searchQuery)
+            );
+
+            // Clear and re-render the filtered items
+            let mainCourseItems = document.getElementById("mainCourseItems");
+            let nonVegItems = document.getElementById("nonVegItems");
+
+            mainCourseItems.innerHTML = '';
+            nonVegItems.innerHTML = '';
+
+            filteredItems.forEach(item => {
+                const itemHTML = `
+                    <div class="menu-item">
+                        <img src="${item.image}" alt="${item.name}" class="item-image">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">${item.price}</div>
+                    </div>
+                `;
+                if (item.category === "Main Course") {
+                    mainCourseItems.innerHTML += itemHTML;
+                } else if (item.category === "Non-Veg") {
+                    nonVegItems.innerHTML += itemHTML;
+                }
+            });
+        }
+
+        // Initial rendering of items
+        renderItems();
+    </script>
+</body>
+</html>
