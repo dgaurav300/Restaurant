@@ -27,10 +27,15 @@
             border-radius: 10px;
             overflow-x: hidden;
             margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
         .menu-header {
             text-align: center;
             margin-bottom: 30px;
+            flex-shrink: 0;
         }
         .menu-header h1 {
             font-size: 2.5rem;
@@ -40,6 +45,7 @@
         .search-bar {
             text-align: center;
             margin-bottom: 20px;
+            flex-shrink: 0;
         }
         .search-bar input {
             padding: 10px;
@@ -200,12 +206,38 @@
                 font-size: 0.9rem;
             }
         }
+
+        #typeFilter {
+            appearance: none;
+            background-color: #ff5722;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            margin-top: 20px;
+            border: 2px solid #ff8a65;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #typeFilter:hover {
+            background-color: #ff8a65;
+            border-color: #ff5722;
+            transform: scale(1.05);
+        }
+        #typeFilter:focus {
+            outline: none;
+            box-shadow: 0 0 10px #ff5722;
+        }
+        .menu-categories {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="menu-container">
         <!-- Order Now Button at the Top -->
-        
         <button class="btn" onclick="window.location.href='order.html'">Order Now</button>
 
         <div class="menu-header">
@@ -215,46 +247,69 @@
         <!-- Search Bar -->
         <div class="search-bar">
             <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search for an item...">
+            <select id="typeFilter" onchange="filterItems()">
+                <option value="All">All</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+            </select>
         </div>
 
-        <!-- Menu Category: Main Course -->
-        <div class="menu-category" id="mainCourseCategory">
-            <h2>Main Course</h2>
-            <div id="mainCourseItems"></div>
-        </div>
+        <!-- Scrollable Menu Categories -->
+        <div class="menu-categories">
+            <div class="menu-category" id="breakfastCategory">
+                <h2>Breakfast</h2>
+                <div id="breakfastItems"></div>
+            </div>
 
-        <!-- Menu Category: Non-Veg -->
-        <div class="menu-category" id="nonVegCategory">
-            <h2>Non-Veg</h2>
-            <div id="nonVegItems"></div>
-        </div>
+            <div class="menu-category" id="starterCategory">
+                <h2>Starter</h2>
+                <div id="starterItems"></div>
+            </div>
 
+            <div class="menu-category" id="rotiRiceCategory">
+                <h2>Roti and Rice</h2>
+                <div id="rotiRiceItems"></div>
+            </div>
+
+            <div class="menu-category" id="mainCourseCategory">
+                <h2>Main Course</h2>
+                <div id="mainCourseItems"></div>
+            </div>
+
+            <div class="menu-category" id="nonVegCategory">
+                <h2>Non-Veg</h2>
+                <div id="nonVegItems"></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Array of Menu Items (with images, names, and prices)
+        // Array of Menu Items (with categories and types)
         const menuItems = [
-            { name: "Veg Biryani", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Veg+Biryani" },
-            { name: "Steam Rice", price: "₹70", category: "Main Course", image: "https://via.placeholder.com/50?text=Steam+Rice" },
-            { name: "Jeera Rice", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Jeera+Rice" },
-            { name: "Veg Pulao", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Veg+Pulao" },
-            { name: "Dal Tadka", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Dal+Tadka" },
-            { name: "Shahi Paneer", price: "₹150", category: "Main Course", image: "https://via.placeholder.com/50?text=Shahi+Paneer" },
-            { name: "Butter Paneer Masala", price: "₹100", category: "Main Course", image: "https://via.placeholder.com/50?text=Butter+Paneer+Masala" },
-            { name: "Kadhai Paneer", price: "₹120", category: "Main Course", image: "https://via.placeholder.com/50?text=Kadhai+Paneer" },
-            { name: "Butter Chicken", price: "₹220", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Butter+Chicken" },
-            { name: "Kadhai Chicken", price: "₹240", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Kadhai+Chicken" },
-            { name: "Handi Chicken", price: "₹240", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Handi+Chicken" },
-            { name: "Chicken Biryani", price: "₹260", category: "Non-Veg", image: "https://via.placeholder.com/50?text=Chicken+Biryani" },
+            { name: "Idli", price: "₹50", category: "Breakfast", type: "Veg", image: "https://via.placeholder.com/50?text=Idli" },
+            { name: "Dosa", price: "₹70", category: "Breakfast", type: "Veg", image: "https://via.placeholder.com/50?text=Dosa" },
+            { name: "Paneer Tikka", price: "₹150", category: "Starter", type: "Veg", image: "https://via.placeholder.com/50?text=Paneer+Tikka" },
+            { name: "Chicken Tikka", price: "₹200", category: "Starter", type: "Non-Veg", image: "https://via.placeholder.com/50?text=Chicken+Tikka" },
+            { name: "Butter Naan", price: "₹40", category: "Roti and Rice", type: "Veg", image: "https://via.placeholder.com/50?text=Butter+Naan" },
+            { name: "Jeera Rice", price: "₹100", category: "Roti and Rice", type: "Veg", image: "https://via.placeholder.com/50?text=Jeera+Rice" },
+            { name: "Veg Biryani", price: "₹120", category: "Main Course", type: "Veg", image: "images/Veg Biriyani.png" },
+            { name: "Butter Chicken", price: "₹220", category: "Main Course", type: "Non-Veg", image: "https://via.placeholder.com/50?text=Butter+Chicken" },
         ];
 
         // Function to render items
         function renderItems() {
-            let mainCourseItems = document.getElementById("mainCourseItems");
-            let nonVegItems = document.getElementById("nonVegItems");
+            const categories = {
+                Breakfast: document.getElementById("breakfastItems"),
+                Starter: document.getElementById("starterItems"),
+                "Roti and Rice": document.getElementById("rotiRiceItems"),
+                "Main Course": document.getElementById("mainCourseItems"),
+                "Non-Veg": document.getElementById("nonVegItems"),
+            };
 
-            mainCourseItems.innerHTML = '';
-            nonVegItems.innerHTML = '';
+            // Clear all categories
+            for (let category in categories) {
+                categories[category].innerHTML = '';
+            }
 
             menuItems.forEach(item => {
                 const itemHTML = `
@@ -264,27 +319,35 @@
                         <div class="item-price">${item.price}</div>
                     </div>
                 `;
-                if (item.category === "Main Course") {
-                    mainCourseItems.innerHTML += itemHTML;
-                } else if (item.category === "Non-Veg") {
-                    nonVegItems.innerHTML += itemHTML;
+                if (categories[item.category]) {
+                    categories[item.category].innerHTML += itemHTML;
                 }
             });
         }
 
-        // Function to filter items based on search input
+        // Function to filter items based on search input and type
         function filterItems() {
             const searchQuery = document.getElementById("searchInput").value.toLowerCase();
-            const filteredItems = menuItems.filter(item => 
-                item.name.toLowerCase().includes(searchQuery)
-            );
+            const typeFilter = document.getElementById("typeFilter").value;
 
-            // Clear and re-render the filtered items
-            let mainCourseItems = document.getElementById("mainCourseItems");
-            let nonVegItems = document.getElementById("nonVegItems");
+            const filteredItems = menuItems.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery);
+                const matchesType = typeFilter === "All" || item.type === typeFilter;
+                return matchesSearch && matchesType;
+            });
 
-            mainCourseItems.innerHTML = '';
-            nonVegItems.innerHTML = '';
+            const categories = {
+                Breakfast: document.getElementById("breakfastItems"),
+                Starter: document.getElementById("starterItems"),
+                "Roti and Rice": document.getElementById("rotiRiceItems"),
+                "Main Course": document.getElementById("mainCourseItems"),
+                "Non-Veg": document.getElementById("nonVegItems"),
+            };
+
+            // Clear all categories
+            for (let category in categories) {
+                categories[category].innerHTML = '';
+            }
 
             filteredItems.forEach(item => {
                 const itemHTML = `
@@ -294,10 +357,8 @@
                         <div class="item-price">${item.price}</div>
                     </div>
                 `;
-                if (item.category === "Main Course") {
-                    mainCourseItems.innerHTML += itemHTML;
-                } else if (item.category === "Non-Veg") {
-                    nonVegItems.innerHTML += itemHTML;
+                if (categories[item.category]) {
+                    categories[item.category].innerHTML += itemHTML;
                 }
             });
         }
