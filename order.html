@@ -50,6 +50,13 @@
             text-align: center; 
         }
         #qrcode { margin-top: 20px; }
+        .added-item {
+            background-color: rgba(0, 255, 0, 0.1);
+            font-weight: bold;
+        }
+        .input-row {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
     </style>
 </head>
 <body>
@@ -75,20 +82,19 @@
     <script>
         function addItem() {
             var table = document.getElementById("orderItems");
-            var selectedItem = document.querySelector(".item")?.value;
             var existingItems = document.querySelectorAll(".orderItem");
-            
-            for (let item of existingItems) {
-                let itemName = item.querySelector(".item").value;
-                if (itemName === selectedItem) {
-                    alert("Item already added!");
-                    return;
-                }
+
+            // Check if an input row already exists
+            var inputRow = document.querySelector(".input-row");
+            if (inputRow) {
+                alert("Please complete the current input row before adding a new item.");
+                return;
             }
-            
-            var row = document.createElement("tr");
-            row.classList.add("orderItem");
-            row.innerHTML = `
+
+            // Create a new input row
+            var newRow = document.createElement("tr");
+            newRow.classList.add("input-row");
+            newRow.innerHTML = `
                 <td>
                     <select class="item">
                         <option value="Pizza">Pizza</option>
@@ -103,9 +109,36 @@
                         <option value="Half">Half</option>
                     </select>
                 </td>
+                <td><button onclick="finalizeItem(this)">Add</button></td>
+            `;
+            table.appendChild(newRow);
+        }
+
+        function finalizeItem(button) {
+            var row = button.parentNode.parentNode;
+            var selectedItem = row.querySelector(".item").value;
+            var quantity = row.querySelector(".quantity").value;
+            var portion = row.querySelector(".portion").value;
+
+            // Check for duplicate items
+            var existingItems = document.querySelectorAll(".orderItem");
+            for (let item of existingItems) {
+                let itemName = item.querySelector(".item-name").textContent;
+                if (itemName === selectedItem) {
+                    alert("Duplicate order: This item is already added!");
+                    return;
+                }
+            }
+
+            // Convert input row to added item row
+            row.classList.remove("input-row");
+            row.classList.add("orderItem", "added-item");
+            row.innerHTML = `
+                <td class="item-name">${selectedItem}</td>
+                <td>${quantity}</td>
+                <td>${portion}</td>
                 <td><button onclick="removeItem(this)">Remove</button></td>
             `;
-            table.appendChild(row);
         }
 
         function removeItem(button) {
@@ -117,9 +150,9 @@
             var items = document.querySelectorAll(".orderItem");
             var orderDetails = [];
             items.forEach(item => {
-                var itemName = item.querySelector(".item").value;
-                var quantity = item.querySelector(".quantity").value;
-                var portion = item.querySelector(".portion").value;
+                var itemName = item.querySelector(".item-name").textContent;
+                var quantity = item.children[1].textContent;
+                var portion = item.children[2].textContent;
                 orderDetails.push(`${itemName} (Qty: ${quantity}, Size: ${portion})`);
             });
             
