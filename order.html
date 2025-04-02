@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Order</title>
+    <script src="./js/data.js"></script> <!-- Import data.js -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
     <style>
         body { 
@@ -96,12 +97,14 @@
             // Create a new input row
             var newRow = document.createElement("tr");
             newRow.classList.add("input-row");
+
+            // Generate item options dynamically from menuItems
+            var itemOptions = menuItems.map(item => `<option value="${item.name}">${item.name}</option>`).join("");
+
             newRow.innerHTML = `
                 <td>
                     <select class="item">
-                        <option value="Pizza">Pizza</option>
-                        <option value="Burger">Burger</option>
-                        <option value="Pasta">Pasta</option>
+                        ${itemOptions}
                     </select>
                 </td>
                 <td><input type="number" class="quantity" placeholder="Quantity" min="1" value="1"></td>

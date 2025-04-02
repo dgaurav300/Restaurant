@@ -239,6 +239,7 @@
             max-height: calc(100vh - 250px); /* Adjust height to fit within the viewport */
         }
     </style>
+    <script src="./js/data.js"></script>
 </head>
 <body>
     <div class="menu-container">
@@ -262,21 +263,11 @@
         <!-- Scrollable Menu Categories -->
         <div class="menu-categories">
         </div>
-        
+
     </div>
 
     <script>
-        // Array of Menu Items (with categories and types)
-        const menuItems = [
-            { name: "Idli", price: "₹50", category: "Breakfast", type: "Veg", image: "https://via.placeholder.com/50?text=Idli" },
-            { name: "Dosa", price: "₹70", category: "Breakfast", type: "Veg", image: "https://via.placeholder.com/50?text=Dosa" },
-            { name: "Paneer Tikka", price: "₹150", category: "Starter", type: "Veg", image: "https://via.placeholder.com/50?text=Paneer+Tikka" },
-            { name: "Chicken Tikka", price: "₹200", category: "Starter", type: "Non-Veg", image: "https://via.placeholder.com/50?text=Chicken+Tikka" },
-            { name: "Butter Naan", price: "₹40", category: "Roti and Rice", type: "Veg", image: "https://via.placeholder.com/50?text=Butter+Naan" },
-            { name: "Jeera Rice", price: "₹100", category: "Roti and Rice", type: "Veg", image: "https://via.placeholder.com/50?text=Jeera+Rice" },
-            { name: "Veg Biryani", price: "₹120", category: "Main Course", type: "Veg", image: "images/Veg Biriyani.png" },
-            { name: "Butter Chicken", price: "₹220", category: "Main Course", type: "Non-Veg", image: "https://via.placeholder.com/50?text=Butter+Chicken" },
-        ];
+     
 
         // Function to dynamically generate categories and render items
         function renderCategoriesAndItems() {
@@ -324,21 +315,31 @@
             // Clear and populate items in each category
             const categories = [...new Set(menuItems.map(item => item.category))];
             categories.forEach(category => {
-                const categoryContainer = document.getElementById(`${category.replace(/\s+/g, '')}Category`).querySelector(".category-items");
-                categoryContainer.innerHTML = '';
+                const categoryContainer = document.getElementById(`${category.replace(/\s+/g, '')}Category`);
+                const categoryItemsContainer = categoryContainer.querySelector(".category-items");
+                categoryItemsContainer.innerHTML = '';
 
-                filteredItems
-                    .filter(item => item.category === category)
-                    .forEach(item => {
+                const categoryItems = filteredItems.filter(item => item.category === category);
+
+                if (categoryItems.length > 0) {
+                    categoryContainer.style.display = "block"; // Show category if it has matching items
+                    categoryItems.forEach(item => {
+                        const vegSymbol = item.type === "Veg" ? "🟩" : "🟥"; // Green for Veg, Red for Non-Veg
+                        const priceHTML = item.half_price
+                            ? `<div class="item-price">Full: ₹${item.full_price} | Half: ₹${item.half_price}</div>`
+                            : `<div class="item-price">₹${item.full_price}</div>`;
                         const itemHTML = `
                             <div class="menu-item">
-                                <img src="${item.image}" alt="${item.name}" class="item-image">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">${item.price}</div>
+                                <img src="${item.image || 'https://via.placeholder.com/70'}" alt="${item.name}" class="item-image">
+                                <div class="item-name">${vegSymbol} ${item.name}</div>
+                                ${priceHTML}
                             </div>
                         `;
-                        categoryContainer.innerHTML += itemHTML;
+                        categoryItemsContainer.innerHTML += itemHTML;
                     });
+                } else {
+                    categoryContainer.style.display = "none"; // Hide category if no matching items
+                }
             });
         }
 
