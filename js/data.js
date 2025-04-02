@@ -1,28 +1,30 @@
 const menuItems = [
-    //non-veg item Main course
-    { name: "Butter Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "" },
-{name:"Kadhai Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "" },
-{name:"Handi Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "" },
-{name:"Chicken Biryani", full_price: 160 , category: "Main Course", type: "Non-Veg", image: "" },
-{name:"Chicken Do Piaza", full_price: 260, category: "Main Course", type: "Non-Veg", image: "" },
+
 //veg item Main course
 {name:"Veg Biryani", full_price: 120 , category: "Main Course", type: "Veg", image: "./images/Veg Biriyani.png" },
-{name:"Paneer Butter Masala", full_price:200,half_price:100, category: "Main Course", type: "Veg", image: "" },
+{name:"Paneer Butter Masala", full_price:200,half_price:100, category: "Main Course", type: "Veg", image: "./images/paneer-butter-masala.png" },
 {name:"Daal Tadka", full_price: 100 ,half_price:50, category: "Main Course", type: "Veg", image: "./images/Dal Tadka.png" },
-{name:"Sahi Paneer", full_price: 220, category: "Main Course", type: "Veg", image: "" },
+{name:"Sahi Paneer", full_price: 220, category: "Main Course", type: "Veg", image: "./images/shahi-paneer.png" },
 {name:"Veg Pulao", full_price: 120 , category: "Main Course", type: "Veg", image: "./images/Veg Pulao.png" },
-{name:"Kadhai Paneer", full_price: 200,half_price:100 , category: "Main Course", type: "Veg", image: "" },
+{name:"Kadhai Paneer", full_price: 200,half_price:100 , category: "Main Course", type: "Veg", image: "./images/kadhai-paneer.png" },
 {name:"Matar Paneer", full_price: 220,half_price:110 , category: "Main Course", type: "Veg", image: "" },
 {name:"Paneer Do Piaza", full_price: 220 , category: "Main Course", type: "Veg", image: "" },
 {name:"Paneer Bhujia", full_price: 150 , category: "Main Course", type: "Veg", image: "" },
 {name:"Handi Paneer", full_price: 220 ,half_price:110, category: "Main Course", type: "Veg", image: "" },
 {name:"Mix Veg", full_price: 120 ,half_price:60, category: "Main Course", type: "Veg", image: "" },
 {name:"Mushroom Matar", full_price: 220 , category: "Main Course", type: "Veg", image: "" },
+
+    //non-veg item Main course
+    { name: "Butter Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "./images/butter-chicken.png" },
+{name:"Kadhai Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "" },
+{name:"Handi Chicken", full_price: 240,half_price:120 , category: "Main Course", type: "Non-Veg", image: "" },
+{name:"Chicken Biryani", full_price: 160 , category: "Main Course", type: "Non-Veg", image: "" },
+{name:"Chicken Do Piaza", full_price: 260, category: "Main Course", type: "Non-Veg", image: "" },
 //breakfast item
-{name:"Samosa",full_price: 10 , category: "Breakfast", type: "Veg", image: ""  },
+{name:"Samosa",full_price: 10 , category: "Breakfast", type: "Veg", image: "./images/samosa.png"  },
 {name:"Kachori",full_price: 10 , category: "Breakfast", type: "Veg", image: ""},
 {name:"Vada",full_price: 60 , category: "Breakfast", type: "Veg", image: ""},
-{name:"Idli",full_price: 60 , category: "Breakfast", type: "Veg", image: ""},
+{name:"Idli",full_price: 60 , category: "Breakfast", type: "Veg", image: "./images/idli.png" },
 {name:"Aloo Bonda",full_price: 10 , category: "Breakfast", type: "Veg", image: ""},
 {name:"Bread Pakoda",full_price: 15 , category: "Breakfast", type: "Veg", image: ""},
 {name:"Omelette 2 Egg",full_price: 35 , category: "Breakfast", type: "Non-Veg", image: ""},
